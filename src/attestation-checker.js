@@ -10,7 +10,7 @@ class AttestationChecker {
     start() {
         console.log(`Polling every ${this.pollIntervalSeconds} seconds`)
         // setInterval(this.checkAttestations.bind(this), this.pollIntervalSeconds * 1000)
-        setInterval(this.checkAttestations.bind(this), 2 * 1000)
+        setInterval(this.checkAttestations.bind(this), 10 * 1000)
     }
 
     async checkAttestations() {

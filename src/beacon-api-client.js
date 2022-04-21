@@ -24,30 +24,28 @@ class BeaconAPIClient {
 
         const assignments = {
             proposerAssginments: {},
-            attestorAssignments: {}
+            attestorAssignments: {},
+            syncAssignments: {}
         }
 
+        // propose
         proposerResp.data.forEach(duty => {
             assignments.proposerAssginments[duty.slot] = duty.validator_index
         })
 
+        // attest
         committeesResp.data.forEach(committee => {
-            committee.validators.forEach(validator => {
-                assignments.attestorAssignments
+            committee.validators.forEach((validatorIndex, index) => {
+                const key = formatAttestorAssignmentKey(committee.slot, committee.index, index)
+                assignments.attestorAssignments[key] = validatorIndex
             })
         })
-	// // attest
-	// for _, committee := range parsedCommittees.Data {
-	// 	for i, valIndex := range committee.Validators {
-	// 		valIndexU64, err := strconv.ParseUint(valIndex, 10, 64)
-	// 		if err != nil {
-	// 			return nil, fmt.Errorf("epoch %d committee %d index %d has bad validator index %q", epoch, committee.Index, i, valIndex)
-	// 		}
-	// 		k := utils.FormatAttestorAssignmentKey(uint64(committee.Slot), uint64(committee.Index), uint64(i))
-	// 		assignments.AttestorAssignments[k] = valIndexU64
-	// 	}
-	// }
+	
+        const syncCommitteeState = depStateRoot
+        const {data: syncCommittee} = await this.http.get(`/eth/v1/beacon/states/${syncCommitteeState}/sync_committees?epoch=${epoch}`)
+        assignments.syncAssignments = syncCommittee.validators;
 
+        return assignments;
 	// if epoch >= utils.Config.Chain.AltairForkEpoch {
 	// 	syncCommitteeState := depStateRoot
 	// 	if epoch == utils.Config.Chain.AltairForkEpoch {
@@ -128,4 +126,16 @@ module.exports = { BeaconAPIClient };
     // // propose
 	// for _, duty := range parsedProposerResponse.Data {
 	// 	assignments.ProposerAssignments[uint64(duty.Slot)] = uint64(duty.ValidatorIndex)
+	// }
+
+    // // attest
+	// for _, committee := range parsedCommittees.Data {
+	// 	for i, valIndex := range committee.Validators {
+	// 		valIndexU64, err := strconv.ParseUint(valIndex, 10, 64)
+	// 		if err != nil {
+	// 			return nil, fmt.Errorf("epoch %d committee %d index %d has bad validator index %q", epoch, committee.Index, i, valIndex)
+	// 		}
+	// 		k := utils.FormatAttestorAssignmentKey(uint64(committee.Slot), uint64(committee.Index), uint64(i))
+	// 		assignments.AttestorAssignments[k] = valIndexU64
+	// 	}
 	// }
