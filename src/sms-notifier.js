@@ -9,10 +9,10 @@ class SMSNotifier {
     }
 
     notify (message) {
-        console.log(`SMS sent to ${message}`);
+        console.log(`SMS message: ${message}`);
         client.messages
             .create({
-                body: 'Hello there!',
+                body: message,
                 from: '+19206773875',
                 to: '+41792990136'
             })
