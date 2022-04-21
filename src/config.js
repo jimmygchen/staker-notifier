@@ -6,7 +6,7 @@ const config = {
     sms: {
         apiKey: ''
     },
-    pubkeys: ['0x800014888ffca98e593fc94eea7a67e12193b8545046661894c2e22127c511359329a1e3d8ffae887853bdd4800efc61']
+    pubkeys: ['0xa18f6c9ece449c9fbdd565db964a21e0114ed73c37e52528d144a466e07473d697dd618924ced9e1231449a0f70749a3']
 }
 
 module.exports = { config }
