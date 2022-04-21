@@ -9,7 +9,7 @@ const port = 3000
 
 const notifer = new SMSNotifier()
 const checker = new AttestationChecker(config.attestationChecker, notifer)
-checker.start();
+checker.start(config.pubkeys);
 
 // TODO: ADD or remove pubkeys
 app.get('/', (req, res) => {
