@@ -1,7 +1,7 @@
 const config = {
     attestationChecker: {
         beaconAPIs: process.env.BEACON_API_LIST,
-        pollIntervalSeconds: 10 // 384 = 1 epoch
+        pollIntervalSeconds: 30 // 384 = 1 epoch
     },
     sms: {
         apiKey: ''

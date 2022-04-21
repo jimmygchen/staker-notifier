@@ -19,7 +19,7 @@ class AttestationChecker {
         try {
             isBalanceReduced = await this.apiClient.isBalanceReduced(pubkeys)
             if (isBalanceReduced) {
-                this.notifier.notify(`Balance for validator ${pubkeys} has reduced!!!!`)
+                this.notifier.notify(`Balance for validator ${pubkeys} has reduced at ${new Date().toUTCString()}`)
             }
         } catch (err) {
             console.error(`error retrieving staff: ${err}`)
