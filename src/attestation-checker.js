@@ -1,4 +1,5 @@
 const { BeaconAPIClient } = require("./beacon-api-client");
+const { notifier } = require("./sms-notifier")
 
 class AttestationChecker {
     constructor(config, notifier) {
@@ -10,7 +11,7 @@ class AttestationChecker {
     start(pubkeys) {
         console.log(`Polling every ${this.pollIntervalSeconds} seconds`)
         // setInterval(this.checkAttestations.bind(this), this.pollIntervalSeconds * 1000)
-        setInterval(this.checkAttestations.bind(this, pubkeys), 2 * 1000)
+        setInterval(this.checkAttestations.bind(this, pubkeys), 4 * 1000)
     }
 
     async checkAttestations(pubkeys) {
@@ -22,7 +23,7 @@ class AttestationChecker {
                 this.notifier.notify(`Balance for validator ${pubkeys} has reduced!!!!`)
             }
         } catch (err) {
-            console.error(`error retrieving assigmnets: ${err}`)
+            console.error(`error retrieving staff: ${err}`)
         }
     }
 }
