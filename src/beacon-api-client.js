@@ -13,13 +13,13 @@ class BeaconAPIClient {
     async isBalanceReduced(pubkey) {
         const currentSlot = Math.floor((new Date().getTime() / 1000 - PRATER_GENESIS_TS) / 12)
         const {data: currentEpochResp } = await this.http.get(`/eth/v1/beacon/states/${currentSlot}/validators?id=${pubkey}`)
-        const currentEpochBalance = currentEpochResp.data.balance
+        const currentEpochBalance = currentEpochResp.data[0].balance
         
         const previousEpochSlot = currentSlot - 32
         const {data: previousEpochResp} = await this.http.get(`/eth/v1/beacon/states/${previousEpochSlot}/validators?id=${pubkey}`)
-        const previousBalance = previousEpochResp.data.balance
+        const previousBalance = previousEpochResp.data[0].balance
 
-        return (currentEpochBalance <= previousBalance) 
+        return (Number(currentEpochBalance) <= Number(previousBalance)) 
     }
 
     // async getAsttestationData () {
