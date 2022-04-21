@@ -18,7 +18,9 @@ class AttestationChecker {
 
         try {
             isBalanceReduced = await this.apiClient.isBalanceReduced(pubkeys)
-            console.log({isBalanceReduced})
+            if (isBalanceReduced) {
+                this.notifier.notify(`Balance for validator ${pubkeys} has reduced!!!!`)
+            }
         } catch (err) {
             console.error(`error retrieving assigmnets: ${err}`)
         }
