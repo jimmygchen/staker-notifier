@@ -1,7 +1,6 @@
 const accountSid = 'AC22edf3c824a4178b6fbe3b2438b7b51b';
 const authToken = '';
 const client = require('twilio')(accountSid, authToken);
-client.logLevel = 'debug';
 
 class SMSNotifier {
     constructor() {
