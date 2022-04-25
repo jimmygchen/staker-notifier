@@ -1,12 +1,17 @@
+require('dotenv').config();
+
 const config = {
-    attestationChecker: {
+    balanceChecker: {
         beaconAPIs: process.env.BEACON_API_LIST,
-        pollIntervalSeconds: 30 // 384 = 1 epoch
+        pollIntervalSeconds: process.env.POLL_INTERVAL_SECONDS || 384 // default to 1 epoch
     },
     sms: {
-        apiKey: ''
+        accountSid: process.env.TWILIO_ACCOUNT_SID,
+        authToken: process.env.TWILIO_AUTH_TOKEN,
+        from: process.env.SMS_FROM,
+        to: process.env.SMS_TO
     },
-    pubkeys: ['0xa18f6c9ece449c9fbdd565db964a21e0114ed73c37e52528d144a466e07473d697dd618924ced9e1231449a0f70749a3']
+    pubkeys: process.env.VALIDATOR_PUBKEYS.split(',')
 }
 
 module.exports = { config }

@@ -1,21 +1,20 @@
-const accountSid = 'AC22edf3c824a4178b6fbe3b2438b7b51b';
-const authToken = 'INSERT TOKEN HERE';
-const client = require('twilio')(accountSid, authToken);
-
+const twilio = require('twilio');
 class SMSNotifier {
-    constructor() {
-
+    constructor(config) {
+        this.config = config;
+        this.client = twilio(config.accountSid, config.authToken)
     }
 
-    notify (message) {
-        console.log(`SMS message: ${message}`);
-        client.messages
+    notify(message) {
+        console.log(`Sending SMS: ${message}`);
+        this.client.messages
             .create({
                 body: message,
-                from: 'INSERT NUMBER HERE',
-                to: 'INSERT NUMBER HERE'
+                from: this.config.from,
+                to: this.config.to
             })
-            .then(message => console.log(message.sid));
+            .then(message => console.log(`Message successfully sent: ${message.sid}`))
+            .catch(err => console.error(`Error sending message: ${err}`));
     }
 }
 

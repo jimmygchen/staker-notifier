@@ -1,21 +1,7 @@
-const express = require('express')
-const { AttestationChecker } = require('./attestation-checker')
+const { ValidatorBalanceChecker } = require('./validator-balance-checker')
 const { SMSNotifier } = require('./sms-notifier')
-require('dotenv').config()
 const { config } = require('./config')
 
-const app = express()
-const port = 3000
-
-const notifer = new SMSNotifier()
-const checker = new AttestationChecker(config.attestationChecker, notifer)
+const notifer = new SMSNotifier(config.sms)
+const checker = new ValidatorBalanceChecker(config.balanceChecker, notifer)
 checker.start(config.pubkeys);
-
-// TODO: ADD or remove pubkeys
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})

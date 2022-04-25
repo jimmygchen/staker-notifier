@@ -1,7 +1,6 @@
 const { BeaconAPIClient } = require("./beacon-api-client");
-const { notifier } = require("./sms-notifier")
 
-class AttestationChecker {
+class ValidatorBalanceChecker {
     constructor(config, notifier) {
         this.pollIntervalSeconds = config.pollIntervalSeconds;
         this.notifier = notifier;
@@ -9,22 +8,20 @@ class AttestationChecker {
     }
 
     start(pubkeys) {
-        console.log(`Polling every ${this.pollIntervalSeconds} seconds`)
-        setInterval(this.checkAttestations.bind(this, pubkeys), this.pollIntervalSeconds * 1000)
+        console.log(`Polling Beacon API every ${this.pollIntervalSeconds} seconds`)
+        setInterval(this.checkBalances.bind(this, pubkeys), this.pollIntervalSeconds * 1000)
     }
 
-    async checkAttestations(pubkeys) {
-        let isBalanceReduced = {}
-
+    async checkBalances(pubkeys) {
         try {
-            isBalanceReduced = await this.apiClient.isBalanceReduced(pubkeys)
+            const isBalanceReduced = await this.apiClient.isBalanceReduced(pubkeys)
             if (isBalanceReduced) {
                 this.notifier.notify(`Balance for validator ${pubkeys} has reduced at ${new Date().toUTCString()}`)
             }
         } catch (err) {
-            console.error(`error retrieving staff: ${err}`)
+            console.error(`error retrieving balance: ${err}`)
         }
     }
 }
 
-module.exports = { AttestationChecker }
+module.exports = { ValidatorBalanceChecker }
