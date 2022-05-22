@@ -1,5 +1,8 @@
 const PUBKEY_REGEX = /0x[A-Fa-f0-9]{96}/;
-const SECONDS_PER_EPOCH = 384;
+const SECONDS_PER_SLOT = 12;
+const SLOTS_PER_EPOCH = 32;
+const SECONDS_PER_EPOCH = SECONDS_PER_SLOT * SLOTS_PER_EPOCH;
+
 
 class ValidatorPollingService {
     #pollingIntervalSeconds = SECONDS_PER_EPOCH;
@@ -59,8 +62,8 @@ class ValidatorPollingService {
             this.#genesisTime = await this.#beaconApiClient.getGenesisTime();
         }
 
-        const currentSlot = Math.floor((new Date().getTime() / 1000 - this.#genesisTime) / 12)
-        const previousEpochSlot = currentSlot - 32;
+        const currentSlot = Math.floor((new Date().getTime() / 1000 - this.#genesisTime) / SECONDS_PER_SLOT);
+        const previousEpochSlot = currentSlot - SLOTS_PER_EPOCH;
         
         const [currentData, previousEpochData] = await Promise.all([
             this.#beaconApiClient.getValidators(currentSlot, this.#validatorPubKeys),
