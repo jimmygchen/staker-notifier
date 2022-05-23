@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "description": "A simple tool for Ethereum stakers to receive SMS notification whenever their validator(s) is unhealthy.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/main.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch"
   },
   "repository": {
     "type": "git",
@@ -19,5 +22,12 @@
     "axios": "^0.26.1",
     "dotenv": "^16.0.0",
     "twilio": "^3.76.1"
+  },
+  "devDependencies": {
+    "jest": "^28.1.0"
+  },
+  "jest": {
+    "transform": {},
+    "testEnvironment": "jest-environment-node"
   }
 }
