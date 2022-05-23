@@ -39,4 +39,18 @@ describe('validatorStatusChangedAlert', () => {
       )
     )
   });
+
+  it('should notify when validator has been added to the beacon chain, i.e. validator not in previous epoch', () => {
+    const validatorState = { ...newValidatorState(), status: 'pending_queued' };
+
+    validatorStatusChangedAlert(notifierMock, [{
+      current: validatorState
+    }]);
+
+    expect(notifierMock.notify).toBeCalledWith(
+      expect.stringMatching(
+        `Validator ${validatorState.index} has transitioned from unknown to pending_queued.`
+      )
+    )
+  });
 });

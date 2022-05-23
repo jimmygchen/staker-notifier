@@ -1,5 +1,7 @@
 function validatorBalanceReducedAlert(notifier, validators) {
-  const validatorsToAlert = validators.filter(v => {
+  const validatorsToAlert = validators
+  .filter(v => !!v.previous) // ignore newly added validators without previous state
+  .filter(v => {
     const currentEpochBalance = v.current.balance;
     const previousEpochBalance = v.previous.balance;
     return (Number(currentEpochBalance) <= Number(previousEpochBalance))

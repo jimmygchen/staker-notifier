@@ -36,7 +36,7 @@ class ValidatorPollingService {
    * 
    * @callback validatorResultCallback
    * @param {Object[]} validators
-   * @param {Object} validators.previous validator state at previous epoch
+   * @param {Object} validators.previous validator state at previous epoch. `undefined` if validator is just added in the current epoch.
    * @param {Object} validators.current validator state at current epooch
    */
 
