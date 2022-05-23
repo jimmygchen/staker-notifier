@@ -32,7 +32,7 @@ class ValidatorPollingService {
 
     this.#validatorPubKeys = this.#validatorPubKeys.concat(newPubKeys);
     
-    console.log(`Validator(s) added: ${pubKeys.map(k => validatorShortName(k)).join(',')}`)
+    console.log(`Validator(s) added: ${newPubKeys.map(k => validatorShortName(k)).join(',')}`)
   }
 
   /**
