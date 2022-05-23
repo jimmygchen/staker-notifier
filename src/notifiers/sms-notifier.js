@@ -1,6 +1,6 @@
 import twilio from 'twilio';
 
-const MAX_SMS_LENGTH = 100; // 160 - additional text from twilio trial account (40) - date time (20)
+const MAX_SMS_LENGTH = 120; // 160 - additional text from twilio trial account (40)
 
 class SMSNotifier {
   constructor(config) {
