@@ -3,6 +3,8 @@ const SECONDS_PER_SLOT = 12;
 const SLOTS_PER_EPOCH = 32;
 const SECONDS_PER_EPOCH = SECONDS_PER_SLOT * SLOTS_PER_EPOCH;
 
+import { validatorShortName } from './utils.js';
+
 class ValidatorPollingService {
   #pollingIntervalSeconds;
   #beaconApiClient;
@@ -29,6 +31,8 @@ class ValidatorPollingService {
     if (!allValid) throw new Error(`Failed to add validator key(s)`)
 
     this.#validatorPubKeys = this.#validatorPubKeys.concat(newPubKeys);
+    
+    console.log(`Validator(s) added: ${pubKeys.map(k => validatorShortName(k)).join(',')}`)
   }
 
   /**
@@ -54,11 +58,11 @@ class ValidatorPollingService {
   }
 
   start() {
-    setInterval(this.pollValidators.bind(this), this.#pollingIntervalSeconds * 1000);
+    setInterval(this.#pollValidators.bind(this), this.#pollingIntervalSeconds * 1000);
     console.log(`Started polling validators every ${this.#pollingIntervalSeconds} seconds.`)
   }
 
-  async pollValidators() {
+  async #pollValidators() {
     if (!this.#genesisTime) {
       this.#genesisTime = await this.#beaconApiClient.getGenesisTime();
     }
