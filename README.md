@@ -13,7 +13,7 @@ Currently only **SMS** notification is supported.
 - A [Twilio](https://www.twilio.com/messaging) account & number
 - Access to a Beacon node API endpoint, such as [Infura](https://infura.io) or your own Beacon node
 
-## Quick start (with Docker)
+## Quick start
 
 1. Set up a [Twilio](https://www.twilio.com/messaging) account (comes with free trial credit). In the Twilio console:
    - Copy the 'Account SID' and 'Auth Token'. This will be used in step 3. 
