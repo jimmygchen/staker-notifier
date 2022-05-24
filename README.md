@@ -1,6 +1,6 @@
 # Staker Notifier
 
-A simple notification tool for Ethereum stakers & validator operators to track their validator health and statuses. Run it easily in your own infrastructure without disclosing   information about your validator to 3rd parties.
+A simple notification tool for Ethereum stakers & validator operators to track their validator health and statuses. Run it easily in your own infrastructure without disclosing information about your validator to 3rd parties.
 
 Staker Notifier currently tracks the following events:
 - **Balance**: when balance of one or more validators have reduced since the previous epoch
