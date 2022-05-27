@@ -10,13 +10,13 @@ class BeaconAPIClient {
   }
 
   async getValidators(stateId, pubKeys) {
-	  const options = {
-		  params: { id: pubKeys },
-		  paramsSerializer: (params) => {
-		         return qs.stringify(params, {arrayFormat: 'repeat'})
-		      }
-	  };
-	  
+    const options = {
+      params: { id: pubKeys },
+      paramsSerializer: (params) => {
+        return qs.stringify(params, { arrayFormat: 'repeat' })
+      }
+    };
+
     const { data } = await this.queryEndpoint(`/eth/v1/beacon/states/${stateId}/validators`, options)
     return data;
   }
