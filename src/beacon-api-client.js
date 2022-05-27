@@ -1,4 +1,5 @@
 import axios from 'axios';
+import qs from 'qs';
 
 class BeaconAPIClient {
   constructor(beaconAPIs) {
@@ -9,13 +10,20 @@ class BeaconAPIClient {
   }
 
   async getValidators(stateId, pubKeys) {
-    const { data } = await this.queryEndpoint(`/eth/v1/beacon/states/${stateId}/validators?id=${pubKeys.join(',')}`)
+	  const options = {
+		  params: { id: pubKeys },
+		  paramsSerializer: (params) => {
+		         return qs.stringify(params, {arrayFormat: 'repeat'})
+		      }
+	  };
+	  
+    const { data } = await this.queryEndpoint(`/eth/v1/beacon/states/${stateId}/validators`, options)
     return data;
   }
 
-  async queryEndpoint(url) {
+  async queryEndpoint(url, options = {}) {
     try {
-      const data = await this.http.get(url)
+      const data = await this.http.get(url, options)
       return data
     } catch (err) {
       console.log(`Request to ${url} failed with error ${err.message}`)
