@@ -67,18 +67,41 @@ class ValidatorPollingService {
       this.#genesisTime = await this.#beaconApiClient.getGenesisTime();
     }
 
-    const currentSlot = Math.floor((new Date().getTime() / 1000 - this.#genesisTime) / SECONDS_PER_SLOT);
-    const previousEpochSlot = currentSlot - SLOTS_PER_EPOCH;
-
-    const [currentEpochData, previousEpochData] = await Promise.all([
-      this.#beaconApiClient.getValidators(currentSlot, this.#validatorPubKeys),
-      this.#beaconApiClient.getValidators(previousEpochSlot, this.#validatorPubKeys),
-    ]);
+	const [currentEpochData, previousEpochData] = await withRetry(() => {
+	    const currentSlot = Math.floor((new Date().getTime() / 1000 - this.#genesisTime) / SECONDS_PER_SLOT) - 1;
+	    const previousEpochSlot = currentSlot - SLOTS_PER_EPOCH;
+		
+	    return Promise.all([
+	      this.#beaconApiClient.getValidators(currentSlot, this.#validatorPubKeys),
+	      this.#beaconApiClient.getValidators(previousEpochSlot, this.#validatorPubKeys),
+	    ]);
+	});
 
     const validatorStates = mergeValidatorData(currentEpochData.data, previousEpochData.data)
     this.#listeners.forEach(listener => listener(validatorStates));
   }
 
+}
+
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+
+async function withRetry(fn, maxAttempts = 3,interval = SECONDS_PER_SLOT * 1000) {
+	let attempts = 0;
+
+	while (attempts < maxAttempts) {
+		try {
+			return await fn();
+		} catch (err) {
+			attempts++;
+			console.warn(`${attempts} of ${maxAttempts} attempts failed with error: ${err}`);
+			
+			if (attempts == maxAttempts) {
+				throw new Error(`Failed after ${attempts} attempts: ${err}`);
+			}
+			
+			await sleep(interval);
+		}
+	}
 }
 
 function mergeValidatorData(currentList, previousList) {
