@@ -4,7 +4,7 @@ function validatorBalanceReducedAlert(notifier, validators) {
   .filter(v => {
     const currentEpochBalance = v.current.balance;
     const previousEpochBalance = v.previous.balance;
-    return (Number(currentEpochBalance) <= Number(previousEpochBalance))
+    return (Number(currentEpochBalance) < Number(previousEpochBalance));
   });
 
   if (validatorsToAlert.length > 0) {
