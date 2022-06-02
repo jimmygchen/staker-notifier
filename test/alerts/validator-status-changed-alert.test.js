@@ -6,17 +6,20 @@ import { newValidatorState } from '../test-utils/validator-state-factory';
 
 describe('validatorStatusChangedAlert', () => {
   let notifierMock;
+  let listener;
 
   beforeEach(() => {
     notifierMock = {
       notify: jest.fn()
     }
+
+    listener = validatorStatusChangedAlert(notifierMock)
   });
 
   it('should NOT notify when validator status has not changed since last epoch', () => {
     const validatorState = newValidatorState();
 
-    validatorStatusChangedAlert(notifierMock, [{
+    listener([{
       previous: validatorState,
       current: validatorState
     }]);
@@ -28,7 +31,7 @@ describe('validatorStatusChangedAlert', () => {
     const validatorState = newValidatorState();
     const previousState = { ...validatorState, status: 'pending_queued' }
 
-    validatorStatusChangedAlert(notifierMock, [{
+    listener([{
       previous: previousState,
       current: validatorState
     }]);
@@ -43,7 +46,7 @@ describe('validatorStatusChangedAlert', () => {
   it('should notify when validator has been added to the beacon chain, i.e. validator not in previous epoch', () => {
     const validatorState = { ...newValidatorState(), status: 'pending_queued' };
 
-    validatorStatusChangedAlert(notifierMock, [{
+    listener([{
       current: validatorState
     }]);
 
