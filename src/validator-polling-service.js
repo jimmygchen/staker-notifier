@@ -3,7 +3,7 @@ const SECONDS_PER_SLOT = 12;
 const SLOTS_PER_EPOCH = 32;
 const SECONDS_PER_EPOCH = SECONDS_PER_SLOT * SLOTS_PER_EPOCH;
 
-import { validatorShortName } from './utils.js';
+import { validatorShortName, withRetry } from './utils.js';
 
 class ValidatorPollingService {
   #pollingIntervalSeconds;
@@ -31,7 +31,7 @@ class ValidatorPollingService {
     if (!allValid) throw new Error(`Failed to add validator key(s)`)
 
     this.#validatorPubKeys = this.#validatorPubKeys.concat(newPubKeys);
-    
+
     console.log(`Validator(s) added: ${newPubKeys.map(k => validatorShortName(k)).join(',')}`)
   }
 
@@ -67,13 +67,17 @@ class ValidatorPollingService {
       this.#genesisTime = await this.#beaconApiClient.getGenesisTime();
     }
 
-    const currentSlot = Math.floor((new Date().getTime() / 1000 - this.#genesisTime) / SECONDS_PER_SLOT);
-    const previousEpochSlot = currentSlot - SLOTS_PER_EPOCH;
+    const queryValidatorStates = () => {
+      const currentSlot = Math.floor((new Date().getTime() / 1000 - this.#genesisTime) / SECONDS_PER_SLOT) - 1;
+      const previousEpochSlot = currentSlot - SLOTS_PER_EPOCH;
 
-    const [currentEpochData, previousEpochData] = await Promise.all([
-      this.#beaconApiClient.getValidators(currentSlot, this.#validatorPubKeys),
-      this.#beaconApiClient.getValidators(previousEpochSlot, this.#validatorPubKeys),
-    ]);
+      return Promise.all([
+        this.#beaconApiClient.getValidators(currentSlot, this.#validatorPubKeys),
+        this.#beaconApiClient.getValidators(previousEpochSlot, this.#validatorPubKeys),
+      ]);
+    };
+
+    const [currentEpochData, previousEpochData] = await withRetry(queryValidatorStates, { interval: SECONDS_PER_EPOCH });
 
     const validatorStates = mergeValidatorData(currentEpochData.data, previousEpochData.data)
     this.#listeners.forEach(listener => listener(validatorStates));
