@@ -6,8 +6,11 @@ import { newValidatorState } from '../test-utils/validator-state-factory';
 
 describe('validatorBalanceReducedAlert', () => {
   const MIN_EPOCHS_TO_TRIGGER = 3;
+  const BALANCE_REDUCED_NOTIFY_INTERVAL_EPOCHS = 10;
+
   const alertConfig = {
-    minEpochsToTrigger: MIN_EPOCHS_TO_TRIGGER
+    minEpochsToTrigger: MIN_EPOCHS_TO_TRIGGER,
+    notifyIntervalEpochs: BALANCE_REDUCED_NOTIFY_INTERVAL_EPOCHS
   };
 
   let alert;
@@ -67,7 +70,33 @@ describe('validatorBalanceReducedAlert', () => {
       validatorState = current;
     }
 
-    expect(notifierMock.notify).toBeCalled();
+    expect(notifierMock.notify).toHaveBeenCalledTimes(1);
+  });
+
+  it('should NOT notify again when triggered until {BALANCE_REDUCED_NOTIFY_INTERVAL_HOURS}', () => {
+    let validatorState = newValidatorState();
+
+    const triggerBalanceReduced = (previous) => {
+      const newBalance = Number(validatorState.balance) - 1;
+      const current = { ...previous, balance: newBalance.toString() }
+      alert([{ previous, current }]);
+      return current;
+    }
+
+    for (let i = 0; i < MIN_EPOCHS_TO_TRIGGER; i++) {
+      validatorState = triggerBalanceReduced(validatorState);
+    }
+    expect(notifierMock.notify).toHaveBeenCalledTimes(1);
+
+    // should not retrigger until {BALANCE_REDUCED_NOTIFY_INTERVAL_EPOCHS} epochs
+    for (let i = 0; i < BALANCE_REDUCED_NOTIFY_INTERVAL_EPOCHS - 1; i++) {
+      validatorState = triggerBalanceReduced(validatorState);
+    }
+    expect(notifierMock.notify).toHaveBeenCalledTimes(1);
+
+    // triggered the 2nd time if it continues to fail after {BALANCE_REDUCED_NOTIFY_INTERVAL_EPOCHS} epochs
+    validatorState = triggerBalanceReduced(validatorState);
+    expect(notifierMock.notify).toHaveBeenCalledTimes(2);
   });
 
 });

@@ -13,7 +13,8 @@ const config = {
   pubkeys: process.env.VALIDATOR_PUBKEYS.split(','),
   alerts: {
     validatorBalanceReduced: {
-      minEpochsToTrigger: 3
+      minEpochsToTrigger: 3,
+      notifyIntervalEpochs: process.env.BALANCE_REDUCED_NOTIFY_INTERVAL_EPOCHS || 20
     }
   }
 }

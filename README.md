@@ -26,13 +26,15 @@ Currently only **SMS** notification is supported.
 
 3. Create a `.env` file at the current working directory with the following contents:
 
-   ```
-   VALIDATOR_PUBKEYS=[comma separated list of validator public keys (with 0x prefix)]
-   BEACON_API_LIST=[enter the beacon node url from step 2. Currently only one url is used]
-   TWILIO_ACCOUNT_SID=[enter the 'Account SID' from step 1]
-   TWILIO_AUTH_TOKEN=[enter the 'Auth Token' from step 1]
-   SMS_FROM=[enter the 'From' number from step 1]
-   SMS_TO=[enter the 'To' number from step 1]
+   | Name                                   | Description                                                     |
+   | -------------------------------------- | --------------------------------------------------------------- |
+   | VALIDATOR_PUBKEYS                      | Comma separated list of validator public keys with 0x prefixes. |
+   | BEACON_API_LIST                        | Beacon node url from step 2. Currently only one url is used.    |
+   | TWILIO_ACCOUNT_SID                     | 'Account SID' from step 1.                                      |
+   | TWILIO_AUTH_TOKEN                      | 'Auth Token' from step 1.                                       |
+   | SMS_FROM                               | 'From' number from step 1.                                      |
+   | SMS_TO                                 | 'To' number from step 1.                                        |
+   | BALANCE_REDUCED_NOTIFY_INTERVAL_EPOCHS | Optional. Number of epochs before resending alert. Default: 20. |                                   |
    ```
 
 4. Run one of the following commands:

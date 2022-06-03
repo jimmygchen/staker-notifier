@@ -1,10 +1,14 @@
 import assert from 'assert';
 
 const validatorBalanceReducedAlert = (notifier, alertConfig) => {
-  const { minEpochsToTrigger } = alertConfig;
+  const { minEpochsToTrigger, notifyIntervalEpochs } = alertConfig;
 
-  // an array of array that tracks validators that have had balance reduced in last n epochs
+  /** An array of array that tracks validators that have had balance reduced in last n epochs */
   const balanceReducedValidatorsList = Array(minEpochsToTrigger).fill([]);
+  
+  /** Last alert triggered. only resend the same alert after {notifyIntervalEpochs} epochs */
+  let triggeredAlert = '';
+  let triggeredAlertCount = 0;
 
   return (validators) => {
     const balanceReducedValidators = validators
@@ -32,7 +36,16 @@ const validatorBalanceReducedAlert = (notifier, alertConfig) => {
     if (validatorsToAlert.length > 0) {
       const validatorIndicesCsv = validatorsToAlert.map(v => v.index).join(',');
       const message = `${validatorsToAlert.length} out of ${validators.length} validators have balance reduced since last epoch. Please check validator(s) ${validatorIndicesCsv}.`;
-      notifier.notify(message);
+      
+      console.log(`${triggeredAlertCount} / ${notifyIntervalEpochs}`)
+      if (triggeredAlert !== message || triggeredAlertCount >= notifyIntervalEpochs) {
+        notifier.notify(message);
+        triggeredAlert = message;
+        triggeredAlertCount = 1;
+      } else {
+        triggeredAlertCount++;
+      }
+      
     } else {
       console.debug(`All ${validators.length} valiators balances are healthy.`)
     }
