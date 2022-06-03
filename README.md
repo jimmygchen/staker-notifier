@@ -24,7 +24,7 @@ Currently only **SMS** notification is supported.
    - Create new project and select 'ETH2' Product.
    - Once created, got to 'Project Settings' and copy the https endpoint. This will be used in step 3.
 
-3. Create a `.env` file at the current working directory with the following contents:
+3. Create a `.env` file at the current working directory with the following contents (See [example here](.env.template)):
 
    | Name                                   | Description                                                     |
    | -------------------------------------- | --------------------------------------------------------------- |
