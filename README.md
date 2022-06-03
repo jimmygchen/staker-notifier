@@ -34,8 +34,8 @@ Currently only **SMS** notification is supported.
    | TWILIO_AUTH_TOKEN                      | 'Auth Token' from step 1.                                       |
    | SMS_FROM                               | 'From' number from step 1.                                      |
    | SMS_TO                                 | 'To' number from step 1.                                        |
-   | BALANCE_REDUCED_NOTIFY_INTERVAL_EPOCHS | Optional. Number of epochs before resending alert. Default: 20. |                                   |
-   ```
+   | BALANCE_REDUCED_NOTIFY_INTERVAL_EPOCHS | Optional. Number of epochs before resending alert. Default: 20. |
+
 
 4. Run one of the following commands:
    - with Docker:
