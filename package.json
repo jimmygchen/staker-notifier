@@ -21,7 +21,8 @@
   "dependencies": {
     "axios": "^0.26.1",
     "dotenv": "^16.0.0",
-    "twilio": "^3.76.1"
+    "twilio": "^3.76.1",
+    "winston": "^3.7.2"
   },
   "devDependencies": {
     "jest": "^28.1.0"

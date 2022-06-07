@@ -10,7 +10,13 @@ const config = {
     from: process.env.SMS_FROM,
     to: process.env.SMS_TO
   },
-  pubkeys: process.env.VALIDATOR_PUBKEYS.split(',')
+  pubkeys: process.env.VALIDATOR_PUBKEYS.split(','),
+  alerts: {
+    validatorBalanceReduced: {
+      minEpochsToTrigger: 3,
+      notifyIntervalEpochs: process.env.BALANCE_REDUCED_NOTIFY_INTERVAL_EPOCHS || 20
+    }
+  }
 }
 
 export { config };

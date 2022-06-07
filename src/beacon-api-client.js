@@ -1,5 +1,6 @@
 import axios from 'axios';
 import qs from 'qs';
+import { logger } from './logger.js';
 
 class BeaconAPIClient {
   constructor(beaconAPIs) {
@@ -26,7 +27,7 @@ class BeaconAPIClient {
       const data = await this.http.get(url, options)
       return data
     } catch (err) {
-      console.log(`Request to ${url} failed with error ${err.message}`)
+      logger.error(`Request to ${url} failed with error`, err);
       throw err
     }
   }
@@ -35,7 +36,7 @@ class BeaconAPIClient {
     if (!this.genesisTime) {
       const { data: genesisResp } = await this.queryEndpoint(`/eth/v1/beacon/genesis`);
       this.genesisTime = genesisResp.data.genesis_time;
-      console.debug(`Genesis time for network is ${this.genesisTime}`);
+      logger.debug(`Genesis time for network is ${this.genesisTime}`);
     }
     return this.genesisTime;
   }

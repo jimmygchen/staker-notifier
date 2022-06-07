@@ -9,6 +9,6 @@ const beaconApiClient = new BeaconAPIClient(config.beaconAPIs);
 const validatorPollingService = new ValidatorPollingService(beaconApiClient);
 
 validatorPollingService.addValidators(config.pubkeys);
-validatorPollingService.addListener(validatorBalanceReducedAlert.bind(null, smsNotifer));
-validatorPollingService.addListener(validatorStatusChangedAlert.bind(null, smsNotifer));
+validatorPollingService.addListener(validatorBalanceReducedAlert(smsNotifer, config.alerts.validatorBalanceReduced));
+validatorPollingService.addListener(validatorStatusChangedAlert(smsNotifer));
 validatorPollingService.start();

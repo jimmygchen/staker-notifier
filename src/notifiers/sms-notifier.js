@@ -1,4 +1,5 @@
 import twilio from 'twilio';
+import { logger } from '../logger.js';
 
 const MAX_SMS_LENGTH = 120; // 160 - additional text from twilio trial account (40)
 
@@ -9,7 +10,7 @@ class SMSNotifier {
   }
 
   notify(message) {
-    console.log(`Sending SMS: ${message}`);
+    logger.info(`Sending SMS: ${message}`);
 
     const dateTime = new Date().toISOString().slice(0, 19) + 'Z';
 
@@ -19,8 +20,8 @@ class SMSNotifier {
         from: this.config.from,
         to: this.config.to
       })
-      .then(message => console.debug(`Message successfully sent: ${message.sid}`))
-      .catch(err => console.error(`Error sending message: ${err}`));
+      .then(message => logger.debug(`Message successfully sent: ${message.sid}`))
+      .catch(err => logger.error('Error sending message', err));
   }
 
   #truncateMessage(message) {
