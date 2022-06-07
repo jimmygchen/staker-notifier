@@ -1,9 +1,10 @@
+import { validatorShortName, withRetry } from './utils.js';
+import { logger } from './logger.js';
+
 const PUBKEY_REGEX = /0x[A-Fa-f0-9]{96}/;
 const SECONDS_PER_SLOT = 12;
 const SLOTS_PER_EPOCH = 32;
 const SECONDS_PER_EPOCH = SECONDS_PER_SLOT * SLOTS_PER_EPOCH;
-
-import { validatorShortName, withRetry } from './utils.js';
 
 class ValidatorPollingService {
   #pollingIntervalSeconds;
@@ -23,7 +24,7 @@ class ValidatorPollingService {
     const allValid = newPubKeys.every(key => {
       const valid = PUBKEY_REGEX.test(key);
       if (!valid) {
-        console.error(`Invalid validator key: ${key}`)
+        logger.error(`Invalid validator key: ${key}`)
       }
       return valid;
     });
@@ -32,7 +33,7 @@ class ValidatorPollingService {
 
     this.#validatorPubKeys = this.#validatorPubKeys.concat(newPubKeys);
 
-    console.log(`Validator(s) added: ${newPubKeys.map(k => validatorShortName(k)).join(',')}`)
+    logger.info(`Validator(s) added: ${newPubKeys.map(k => validatorShortName(k)).join(',')}`)
   }
 
   /**
@@ -59,7 +60,7 @@ class ValidatorPollingService {
 
   start() {
     setInterval(this.#pollValidators.bind(this), this.#pollingIntervalSeconds * 1000);
-    console.log(`Started polling validators every ${this.#pollingIntervalSeconds} seconds.`)
+    logger.info(`Started polling validators every ${this.#pollingIntervalSeconds} seconds.`)
   }
 
   async #pollValidators() {

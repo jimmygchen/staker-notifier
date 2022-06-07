@@ -1,3 +1,5 @@
+import { logger } from './logger.js';
+
 export const validatorShortName = (pubkey) => pubkey.slice(2, 9);
 
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
@@ -11,7 +13,7 @@ export async function withRetry(fn, options = {}) {
       return await fn();
     } catch (err) {
       attempts++;
-      console.warn(`${attempts} of ${maxAttempts} attempts failed with error: ${err}`);
+      logger.warn(`${attempts} of ${maxAttempts} attempts failed with error`, err);
 
       if (attempts == maxAttempts) {
         throw new Error(`Failed after ${attempts} attempts: ${err}`);
