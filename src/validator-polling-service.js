@@ -58,8 +58,8 @@ class ValidatorPollingService {
     }
   }
 
-  start() {
-    this.#pollValidators();
+  async start() {
+    await this.#pollValidators();
     setInterval(this.#pollValidators.bind(this), this.#pollingIntervalSeconds * 1000);
     logger.info(`Started polling validators every ${this.#pollingIntervalSeconds} seconds.`)
   }
