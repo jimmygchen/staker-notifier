@@ -14,17 +14,23 @@ describe('ValidatorPollingService', () => {
     beaconApiClient = new BeaconAPIClient('http://localhost:5052');
     svc = new ValidatorPollingService(beaconApiClient);
     jest.spyOn(BeaconAPIClient.prototype, 'getGenesisTime').mockImplementation(() => Promise.resolve());
+    jest.clearAllTimers();
   });
 
   it('should allow adding listener functions', () => {
     svc.addListener(() => 'I hear you!')
   });
 
+  it('should poll beaconApiClient on startup', async () => {
+    const getValidatorsMock = jest.spyOn(BeaconAPIClient.prototype, 'getValidators').mockImplementation(() => Promise.resolve({ data: [] }));
+    await svc.start();
+    expect(getValidatorsMock).toHaveBeenCalledTimes(2);
+  });
+
   it('should poll beaconApiClient every epoch', async () => {
     const getValidatorsMock = jest.spyOn(BeaconAPIClient.prototype, 'getValidators').mockImplementation(() => Promise.resolve({ data: [] }));
-
-    svc.start();
-    expect(getValidatorsMock).not.toBeCalled();
+    await svc.start();
+    getValidatorsMock.mockClear();
 
     jest.advanceTimersByTime(SECONDS_PER_EPOCH * 1000);
     await flushPromises();

@@ -29,6 +29,9 @@
   },
   "jest": {
     "transform": {},
-    "testEnvironment": "jest-environment-node"
+    "testEnvironment": "jest-environment-node",
+    "restoreMocks": true,
+    "clearMocks": true,
+    "resetMocks": true
   }
 }
