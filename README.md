@@ -1,21 +1,44 @@
 # Staker Notifier
 
-A simple notification tool for Ethereum stakers & validator operators to track their validator health and statuses. Run it easily in your own infrastructure without disclosing information about your validator to 3rd parties.
+A simple notification tool for Ethereum stakers to track validator health and statuses.
+
+The ultimate goal of this tool is to make the stakers' lives easier and better, by reudcing the amount of manual effort and stress from looking after validators and keeping up with changes to the clients and network.
+
+## Table of Contents
+
+- [Alert types](#alert-types)
+- [Notification Channels](#notification-channels)
+- [Prerequisite](#prerequisite)
+- [Quick Start](#quick-start)
+- [Contribute](#contribute)
+
+## Alert types
 
 Staker Notifier currently tracks the following events:
 - **Balance**: when balance of one or more validators have reduced for a few consecutive epochs
 - **Status**: when validator status has changed or when new validator has been added to the beacon chain
 
-Currently only **SMS** notification is supported.
+### Example messages:
+- *"2022-05-24T10:18:47Z Validator 82 has transitioned from pending_queued to active_ongoing."*
+- *"2022-05-24T10:21:11Z 1 out of 3 validators have balance reduced since last epoch. Please check validator(s) 81"*
+
+Please see additional alert types that are being considered in [issue list](https://github.com/jchen86/staker-notifier/labels/alert%20type)
+
+## Notification channels
+
+Currently only **SMS** notification is supported - it's original idea that started this project, to be able to be notified, without installing any mobile app and requiring internet access. 
+
+However, additional notification channels are being considered and may be implemented depending on deamnd. See issue list [here](https://github.com/jchen86/staker-notifier/issues?q=is%3Aissue+is%3Aopen+label%3A%22notification+channel%22)
 
 ## Prerequisite
 
-- A [Twilio](https://www.twilio.com/messaging) account & number
-- Access to a Beacon node API endpoint, such as [Infura](https://infura.io) or your own Beacon node
+1. **A [Twilio](https://www.twilio.com/messaging) account & number**: Staker Notifier requires usage of a third party SMS provider, however the usage will be minimal unless a large amount of notifications are sent. A free trial credit is currently being offerred to new users that should last for quite a while.
+
+2. **Access to one or multiple Beacon node API endpoints**, such as [Infura](https://infura.io) or your own Beacon node. **[Infura](https://infura.io) is an ethereum node provider and is optional for using Staker Notifier, as you can also choose to use your own node. However, it could come handy as a fallback ([issue](https://github.com/jchen86/staker-notifier/issues/17) to be implemented) when there are issues with the beacon node. 
 
 ## Quick start
 
-1. Set up a [Twilio](https://www.twilio.com/messaging) account (comes with free trial credit). In the Twilio console:
+1. Set up a [Twilio](https://www.twilio.com/messaging) account. In the Twilio console:
    - Copy the 'Account SID' and 'Auth Token'. This will be used in step 3. 
    - Buy a number. This will be the 'From' number for sending the SMS.
    - Add a verified caller ID to use it as the 'To' number for outbound calls/messages.
@@ -46,3 +69,7 @@ Currently only **SMS** notification is supported.
      ```
      npm install && npm start
      ```
+
+## Contribute
+
+Contributions welcome. Please check out [the issues](https://github.com/jchen86/staker-notifier/issues).
