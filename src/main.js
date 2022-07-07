@@ -15,4 +15,5 @@ validatorPollingService.addListener(validatorStatusChangedAlert(smsNotifer));
 validatorPollingService.start()
   .catch((err) => {
     logger.error(`Error polling validators from Beacon API ${config.beaconAPIs}: `, err);
+    throw err;
   });
