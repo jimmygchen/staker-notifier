@@ -11,7 +11,6 @@ class ValidatorPollingService {
   #beaconApiClient;
   #validatorPubKeys = [];
   #listeners = [];
-  #genesisTime;
 
   constructor(beaconApiClient, pollingIntervalSeconds = SECONDS_PER_EPOCH) {
     this.#beaconApiClient = beaconApiClient;
@@ -65,21 +64,19 @@ class ValidatorPollingService {
   }
 
   async #pollValidators() {
-    if (!this.#genesisTime) {
-      this.#genesisTime = await this.#beaconApiClient.getGenesisTime();
-    }
-
-    const queryValidatorStates = () => {
-      const currentSlot = Math.floor((new Date().getTime() / 1000 - this.#genesisTime) / SECONDS_PER_SLOT) - 1;
-      const previousEpochSlot = currentSlot - SLOTS_PER_EPOCH;
+    const queryValidatorStates = async () => {
+      const headSlot = await this.#beaconApiClient.getHeadSlot();
+      const previousEpochSlot = headSlot - SLOTS_PER_EPOCH;
+      
+      logger.debug(`Retrieving validator data for slot ${headSlot} and ${previousEpochSlot}}`);
 
       return Promise.all([
-        this.#beaconApiClient.getValidators(currentSlot, this.#validatorPubKeys),
+        this.#beaconApiClient.getValidators(headSlot, this.#validatorPubKeys),
         this.#beaconApiClient.getValidators(previousEpochSlot, this.#validatorPubKeys),
       ]);
     };
 
-    const [currentEpochData, previousEpochData] = await withRetry(queryValidatorStates, { interval: SECONDS_PER_EPOCH });
+    const [currentEpochData, previousEpochData] = await withRetry(queryValidatorStates, { interval: SECONDS_PER_SLOT });
 
     const validatorStates = mergeValidatorData(currentEpochData.data, previousEpochData.data)
     this.#listeners.forEach(listener => listener(validatorStates));

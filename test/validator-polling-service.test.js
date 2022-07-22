@@ -14,6 +14,7 @@ describe('ValidatorPollingService', () => {
     beaconApiClient = new BeaconAPIClient('http://localhost:5052');
     svc = new ValidatorPollingService(beaconApiClient);
     jest.spyOn(BeaconAPIClient.prototype, 'getGenesisTime').mockImplementation(() => Promise.resolve());
+    jest.spyOn(BeaconAPIClient.prototype, 'getHeadSlot').mockImplementation(() => Promise.resolve(500000));
     jest.clearAllTimers();
   });
 

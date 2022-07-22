@@ -10,6 +10,11 @@ class BeaconAPIClient {
     })
   }
 
+  async getHeadSlot() {
+    const { data: response } = await this.queryEndpoint(`/eth/v1/beacon/headers/head`);
+    return response.data.header.message.slot;
+  }
+
   async getValidators(stateId, pubKeys) {
     const options = {
       params: { id: pubKeys },
