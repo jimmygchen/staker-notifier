@@ -2,7 +2,7 @@
 
 A simple notification tool for Ethereum stakers to track validator health and statuses.
 
-The ultimate goal of this tool is to make the stakers' lives easier and better, by reudcing the amount of manual effort and stress from looking after validators and keeping up with changes to the clients and network.
+The ultimate goal of this tool is to make the stakers' lives easier and better by reducing the amount of manual effort and stress from looking after validators and keeping up with changes to the clients and network.
 
 ## Table of Contents
 
