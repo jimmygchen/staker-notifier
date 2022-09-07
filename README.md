@@ -16,7 +16,7 @@ The ultimate goal of this tool is to make the stakers' lives easier and better b
 
 Staker Notifier currently tracks the following events:
 - **Balance**: when the balance of one or more validators has decreased for a few consecutive epochs
-- **Status**: when the validator status has changed or when a new validator has been added to the beacon chain.
+- **Status**: when the validator status has changed or when a new validator has been added to the beacon chain
 
 ### Example messages:
 - *"2022-05-24T10:18:47Z Validator 82 has transitioned from pending_queued to active_ongoing."*
