@@ -15,8 +15,8 @@ The ultimate goal of this tool is to make the stakers' lives easier and better b
 ## Alert types
 
 Staker Notifier currently tracks the following events:
-- **Balance**: when balance of one or more validators have reduced for a few consecutive epochs
-- **Status**: when validator status has changed or when new validator has been added to the beacon chain
+- **Balance**: when the balance of one or more validators has decreased for a few consecutive epochs
+- **Status**: when the validator status has changed or when a new validator has been added to the beacon chain
 
 ### Example messages:
 - *"2022-05-24T10:18:47Z Validator 82 has transitioned from pending_queued to active_ongoing."*
@@ -26,13 +26,13 @@ Please see additional alert types that are being considered in [issue list](http
 
 ## Notification channels
 
-Currently only **SMS** notification is supported - it's original idea that started this project, to be able to be notified, without installing any mobile app and requiring internet access. 
+Currently only **SMS** notification is supported - This is the original idea that started this project, to be notified without installing a mobile app and without needing Internet access.
 
-However, additional notification channels are being considered and may be implemented depending on deamnd. See issue list [here](https://github.com/jchen86/staker-notifier/issues?q=is%3Aissue+is%3Aopen+label%3A%22notification+channel%22)
+However, additional notification channels are being considered and may be implemented depending on demand. See issue list [here](https://github.com/jchen86/staker-notifier/issues?q=is%3Aissue+is%3Aopen+label%3A%22notification+channel%22)
 
 ## Prerequisite
 
-1. **A [Twilio](https://www.twilio.com/messaging) account & number**: Staker Notifier requires usage of a third party SMS provider, however the usage will be minimal unless a large amount of notifications are sent. A free trial credit is currently being offerred to new users that should last for quite a while.
+1. **A [Twilio](https://www.twilio.com/messaging) account & number**: Staker Notifier requires the usage of a third-party SMS provider, however the usage will be minimal unless a large number of notifications are sent. A free trial credit is currently being offered to new users that should last for quite a while.
 
 2. **Access to one or multiple Beacon node API endpoints**, such as [Infura](https://infura.io) or your own Beacon node. **[Infura](https://infura.io) is an ethereum node provider and is optional for using Staker Notifier, as you can also choose to use your own node. However, it could come handy as a fallback ([issue](https://github.com/jchen86/staker-notifier/issues/17) to be implemented) when there are issues with the beacon node. 
 
