@@ -47,7 +47,7 @@ const validatorBalanceReducedAlert = (notifier, alertConfig) => {
       }
       
     } else {
-      logger.info(`All ${validators.length} valiators balances are healthy.`)
+      logger.info(`All ${validators.length} validators balances are healthy.`)
     }
   }
 }
