@@ -6,8 +6,8 @@ const telegramBotClient = new TelegramBotApiClient(config.telegram.botURL, confi
 
 class TelegramNotifier {
     constructor(config) {
-        this.config = config;
-        this.chatID = this.config.chatID;
+        this.chatID = config.chatID;
+        this.client = new TelegramBotApiClient(config.telegram.botURL, config.telegram.botToken);
     }
 
     notify(message) {
