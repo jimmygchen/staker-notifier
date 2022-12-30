@@ -16,10 +16,10 @@ const beaconApiClient = new BeaconAPIClient(config.beaconAPIs);
 const validatorPollingService = new ValidatorPollingService(beaconApiClient);
 
 validatorPollingService.addValidators(config.pubkeys);
-validatorPollingService.addListener(validatorBalanceReducedAlert(smsNotifier, config.alerts.validatorBalanceReduced));
-validatorPollingService.addListener(validatorBalanceReducedAlert(telegramNotifier, config.alerts.validatorBalanceReduced));
-validatorPollingService.addListener(validatorStatusChangedAlert(smsNotifier));
-validatorPollingService.addListener(validatorStatusChangedAlert(telegramNotifier));
+notifiers.forEach((notifier) => {
+  validatorPollingService.addListener(validatorBalanceReducedAlert(notifier, config.alerts.validatorBalanceReduced));
+  validatorPollingService.addListener(validatorStatusChangedAlert(notifier));
+});
 validatorPollingService.start()
   .catch((err) => {
     logger.error(`Error polling validators from Beacon API ${config.beaconAPIs}: `, err);
