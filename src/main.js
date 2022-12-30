@@ -5,8 +5,13 @@ import { BeaconAPIClient } from './beacon-api-client.js';
 import { validatorBalanceReducedAlert, validatorStatusChangedAlert } from './alerts/index.js';
 import { logger } from './logger.js';
 
-const smsNotifier = new SMSNotifier(config.sms);
-const telegramNotifier = new TelegramNotifier(config.telegram);
+const notifiers = [];
+if (config.sms) notifiers.push(new SMSNotifier(config.sms));
+if (config.telegram) notifiers.push(new TelegramNotifier(config.telegram));
+
+if (notifiers.length === 0) {
+  throw new Error('Missing notifier config, check your .env file!');
+}
 const beaconApiClient = new BeaconAPIClient(config.beaconAPIs);
 const validatorPollingService = new ValidatorPollingService(beaconApiClient);
 
