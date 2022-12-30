@@ -6,8 +6,8 @@ import { validatorBalanceReducedAlert, validatorStatusChangedAlert } from './ale
 import { logger } from './logger.js';
 
 const notifiers = [];
-if (config.sms) notifiers.push(new SMSNotifier(config.sms));
-if (config.telegram) notifiers.push(new TelegramNotifier(config.telegram));
+if (config.sms.accountSid) notifiers.push(new SMSNotifier(config.sms));
+if (config.telegram.chatID) notifiers.push(new TelegramNotifier(config.telegram));
 
 if (notifiers.length === 0) {
   throw new Error('Missing notifier config, check your .env file!');
