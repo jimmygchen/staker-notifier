@@ -26,7 +26,7 @@ Please see additional alert types that are being considered in [issue list](http
 
 ## Notification channels
 
-Currently only **SMS** notification is supported - This is the original idea that started this project, to be notified without installing a mobile app and without needing Internet access.
+Currently, **SMS** and **Telegram** notifications are supported - This is the original idea that started this project, to be notified without installing a mobile app and without needing Internet access.
 
 However, additional notification channels are being considered and may be implemented depending on demand. See issue list [here](https://github.com/jchen86/staker-notifier/issues?q=is%3Aissue+is%3Aopen+label%3A%22notification+channel%22)
 
@@ -58,6 +58,8 @@ However, additional notification channels are being considered and may be implem
    | SMS_FROM                               | 'From' number from step 1.                                      |
    | SMS_TO                                 | 'To' number from step 1.                                        |
    | BALANCE_REDUCED_NOTIFY_INTERVAL_EPOCHS | Optional. Number of epochs before resending alert. Default: 20. |
+   | TELEGRAM_BOT_TOKEN                     | You need to create a new bot in Telegram.                       | 
+   | TELEGRAM_CHAT_ID                       | You need to create a new chat and invite the bot to it.         |
 
 
 4. Run one of the following commands:
